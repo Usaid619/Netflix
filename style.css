@@ -166,7 +166,7 @@ line-height: 1.5;
 }
 
 .action-button-container{
-    z-index: 110;
+    z-index: 2;
     display: flex;
     align-items: center;
     gap: 11px;
@@ -257,8 +257,8 @@ font-weight: 700;
     gap: 6px;
     padding: 10px 0;
     /* background-color: saddlebrown; */
-    overflow-x: auto;
-    overflow-y: visible;
+    /* overflow-x: auto;
+    overflow-y: visible; */
     /* flex-wrap: nowrap; */
 }
 
@@ -266,12 +266,13 @@ font-weight: 700;
     /* border: 1px solid red; */
     position: relative;
     transition: all ease .5s;    
-    cursor: pointer;
+    
 }
 
 .movie-item:hover{
     scale: 1.2;
-    /* transform: translateY(-30px) */
+    z-index: 3;
+    transform: translateY(-60px)
 }
 
 .movie-item-img{
@@ -279,22 +280,69 @@ font-weight: 700;
     width: 245px;
     border-radius: 4px;
     object-fit: cover;
+    cursor: pointer;
 }
 
-.movie-item > iframe{
+.ratings-div{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;   
+}
+
+.ratings-div  *{
+    color: #dddddd;
+}
+
+.ratings-div > h2{
+font-weight: 400;
+}
+
+.ratings-div > h4{
+font-weight: 100;
+}
+
+.ratings-div > h4 > span, .ratings-div > p > span{
+    font-weight: 600;
+}
+
+.thoughts{
+    line-height: 1.3;
+    font-size: 12px;
+}
+
+.rating-info{
+    display: none;
+    background-color: #0f0f0f;
+    /* border: 1px solid yellow; */
     position: absolute;
     top:0;
     left: 0;
     width: 100%;
+    min-height: 100%;
+    height: auto;
+    box-shadow: 0px 0px 1px white;
+    border-radius: 6px ;
+}
+
+.movie-item > .rating-info > iframe{
+    width: 100%;
     height: 100%;
-    display: none;
-    z-index: 99;
-    border: none;
+    /* display: none; */
+    z-index: 5;
+    /* background-color: aqua; */
     outline: none;
+    border: none;
+    margin-bottom: 10px;
+}
+
+.movie-item:hover .rating-info {
+    width: 200%;
+    display: block;
 }
 
 .movie-item:hover iframe{
-    display: block;
+    aspect-ratio: 16/9;
 }
 
 

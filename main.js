@@ -8,7 +8,8 @@ const apiPaths = {
     fetchAllMoviesList : (id) => `${apiEndPoint}/discover/movie?api_key=${apiKey}&with_genres=${id}`,
     fetchTrending : `${apiEndPoint}/trending/all/day?api_key=${apiKey}&language=en-US`,
     fetchPopular: `${apiEndPoint}/movie/popular?api_key=${apiKey}`,
-    searchOnYoutube: (query) => `${youtubeEndPoint}/search?part=snippet&q=${query}&key=${youtubeApiKey}`
+    searchOnYoutube: (query) => `${youtubeEndPoint}/search?part=snippet&q=${query}&key=${youtubeApiKey}`,
+    getRatings : (movieId) => `${apiEndPoint}/movie/${movieId}/reviews?api_key=${apiKey}`
 }
 const bannerSection = document.querySelector("#banner-section")
 
@@ -43,8 +44,9 @@ function buildBannerSection(movie){
    bannerSection.style.position = "relative"
 
    const bannerHtml = `
-   <h2 class="banner-title">${movie.title && movie.title.length > 20 ? movie.title.slice(0,20).trim() + "..." : movie.title}</h2>
-   <p class="movie-rating">Released on: ${movie.release_date}</p>
+   <h2 class="banner-title">${movie.title && movie.title.length > 20 ? movie.title.slice(0,20).trim() + "..." : movie.title || movie.name}</h2>
+   <p class="movie-rating">Released on: ${movie.release_date || movie.first_air_date
+}</p>
    <p class="movie-info">${movie.overview && movie.overview.length > 200 ? movie.overview.slice(0,200).trim() + "..." : movie.overview}</p>
    <div class="action-button-container">
     <button class="action-btn">
@@ -72,9 +74,9 @@ function fetchAndBuildAllSections(){
 
         if(Array.isArray(categories) && categories.length){
             categories.slice(0,5).forEach(category =>{
+                
                 fetchAndBuildMovieSection(
-                    apiPaths.fetchAllMoviesList(category.id), category.name
-                )
+                    apiPaths.fetchAllMoviesList(category.id), category.name )
             })
         }
     })
@@ -86,6 +88,7 @@ return fetch(fetchUrl)
        .then(res => res.json())
        .then(res => {
     const movies = res.results
+
     if(Array.isArray(movies) && movies.length){
         buildMoviesSection(movies, categoryName)
     } 
@@ -94,20 +97,27 @@ return fetch(fetchUrl)
 .catch(err => console.log(err))
 }
 
-
-function buildMoviesSection(list, categoryName){
+async function buildMoviesSection(list, categoryName){
 
     const moviesContainer = document.querySelector("#movies-container")
 
-    const moviesListHTML = list.map(item =>{  
+    
+
+    const moviesListHTML = (await Promise.all(list.map( async item =>{ 
+        const ratingsHTML = await buildRatings(item.title || item.name, item.id)
+        console.log(ratingsHTML)
+        // pass item.name too on onclick
     return `
-    <div class="movie-item" onmouseleave="stopMovie('yt${item.id}')" onmouseenter="searchMovieTrailer('${item.title}','yt${item.id}')">
-          <img class="movie-item-img" src="${imgPath}${item.poster_path}" alt="${item.title}">
-          <iframe id="yt${item.id}" width="100" height="150" src="">
-</iframe>
-          </div>
+    <div class="movie-item" onmouseenter="searchMovieTrailer('${item.title || item.name}','yt${item.id}')" onmouseleave="stopMovie('yt${item.id}')">
+    <img class="movie-item-img" src="${imgPath}${item.poster_path}" alt="${item.title}">
+    <div class="rating-info">
+    <iframe id="yt${item.id}" width="100" height="150" src="">
+    </iframe>
+    ${ratingsHTML}
+    </div>
+    </div>
           `
-    }).slice(0,9).join("")
+    }))).slice(0,9).join("")
 
 const moviesSectionHTML = `
 <h2 class="movie-section-heading"> <span>Explore All</span>${categoryName}</h2>
@@ -123,13 +133,46 @@ sectionDiv.innerHTML = moviesSectionHTML
 moviesContainer.appendChild(sectionDiv)
 }
 
-function stopMovie(iFrameId){
+function buildRatings(movieName, itemId){
+        return new Promise((resolve,reject) =>{
+              fetch(apiPaths.getRatings(itemId))
+        .then(res => res.json())
+        .then(res =>{
+            const result = res.results
+            if(Array.isArray(result) && result.length){
+            const randomIndex = ~~(Math.random()*result.length)
+            const randomAuthor = result[randomIndex].author
+            const rating = result[randomIndex].author_details.rating
+            const overview = result[randomIndex].content
+
+            const html = 
+            `
+            <div class="ratings-div">
+            <h2>${movieName}</h2>
+            <h4>Reviewer : <span>${randomAuthor}</span></h4>
+            <p>Rating : <span>${rating}</span></p>
+            <p class="thoughts">Thoughts : ${overview && overview.length > 500 ? overview.slice(0,500).trim() + "..." : overview}</p>
+            </div>
+            `
+            resolve(html)
+            } else{
+                resolve('No ratings available')
+            }
+            
+           }) 
+           .catch(err => console.error(err))
+            })
+      
+    }
+
+ function stopMovie(iFrameId){
     document.getElementById(iFrameId).src = ""
-}
+    console.log("lol")
+} 
 
 
 function searchMovieTrailer(movieName, iFrameId){
-    if(!movieName) return
+    if(!movieName || movieName == "undefined") return
     console.log(movieName, iFrameId)
 
     fetch(apiPaths.searchOnYoutube(movieName))
@@ -139,19 +182,6 @@ function searchMovieTrailer(movieName, iFrameId){
        document.getElementById(iFrameId).src = `https://www.youtube.com/embed/${bestResult.id.videoId}?autoplay=1`
     })
     .catch(err => console.error(err))
-
-    // fetch(apiPaths.searchOnYoutube("batman"))
-    // .then(res => res.json())
-    // .then(res => {
-    //    const bestResult = res.items[0]
-    //    console.log(res)
-    // //    const youtubeUrl = `https://www.youtube.com/watch?v=${bestResult.id.videoId}`
-    // // document.getElementById(iFrameId).src = `https://www.youtube.com/embed/${bestResult.id.videoId}?autoplay=1`
-    // // //    window.open(youtubeUrl, "blank")
-
-    
-    // })
-    // .catch(err => console.error(err))
 }
 
 window.addEventListener("load",()=>{
@@ -166,3 +196,4 @@ window.addEventListener("scroll",()=>{
 // header transition
 }) 
 
+// onmouseenter="searchMovieTrailer('${item.title || item.name}','yt${item.id}')" onmouseleave="stopMovie('yt${item.id}')"
