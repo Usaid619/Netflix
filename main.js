@@ -14,7 +14,7 @@ const apiPaths = {
 const bannerSection = document.querySelector("#banner-section")
 
 function init(){
-    // fetchPopular()
+    fetchPopular()
     fetchTrendingMovies()
     fetchAndBuildAllSections()
 }
@@ -105,10 +105,10 @@ async function buildMoviesSection(list, categoryName){
 
     const moviesListHTML = (await Promise.all(list.map( async item =>{ 
         const ratingsHTML = await buildRatings(item.title || item.name, item.id)
-        console.log(ratingsHTML)
         // pass item.name too on onclick
     return `
-    <div class="movie-item" onmouseenter="searchMovieTrailer('${item.title || item.name}','yt${item.id}')" onmouseleave="stopMovie('yt${item.id}')">
+    <div class="movie-item-cont">
+     <div class="movie-item" onmouseenter="searchMovieTrailer('${item.title || item.name}','yt${item.id}')" onmouseleave="stopMovie('yt${item.id}')">
     <img class="movie-item-img" src="${imgPath}${item.poster_path}" alt="${item.title}">
     <div class="rating-info">
     <iframe id="yt${item.id}" width="100" height="150" src="">
@@ -116,6 +116,7 @@ async function buildMoviesSection(list, categoryName){
     ${ratingsHTML}
     </div>
     </div>
+  </div>
           `
     }))).slice(0,9).join("")
 
@@ -167,13 +168,11 @@ function buildRatings(movieName, itemId){
 
  function stopMovie(iFrameId){
     document.getElementById(iFrameId).src = ""
-    console.log("lol")
 } 
 
 
 function searchMovieTrailer(movieName, iFrameId){
     if(!movieName || movieName == "undefined") return
-    console.log(movieName, iFrameId)
 
     fetch(apiPaths.searchOnYoutube(movieName))
     .then(res => res.json())
@@ -195,5 +194,57 @@ window.addEventListener("scroll",()=>{
 })
 // header transition
 }) 
+
+
+const hamMenu = document.querySelector(".ham-menu")
+const hamburgerMenu = document.querySelector(".hamburger-menu")
+
+hamMenu.addEventListener("click",()=>{
+    gsap.from(".underline", {duration : 1, opacity: 0, delay: .7, x: -100})
+
+    hamburgerMenu.classList.toggle("opened")
+})
+
+document.addEventListener("DOMContentLoaded", function(){
+    const navLinks = Array.from(document.querySelectorAll(".nav-item"))
+    const underLineClass = "underline"
+
+    const activeLink = localStorage.getItem("activeLink")
+    if(activeLink){
+        const activeLinkElement = document.getElementById(activeLink)
+        activeLinkElement.classList.add("active")
+
+        const underline = document.createElement("div")
+        underline.className = underLineClass
+        activeLinkElement.appendChild(underline)
+    }
+    
+    navLinks.forEach((nav) =>{
+        nav.addEventListener("click", function (){
+            gsap.from(".underline", {duration: 1, delay: .7, opacity: 0, x: -100})
+
+            if(!this.classList.contains("active")){
+
+                const activeLink = document.querySelector(".nav-item.active")
+
+                if(activeLink){
+                    activeLink.classList.remove("active")
+                    const underline = activeLink.querySelector(`.${underLineClass}`)
+                    if(underline){
+                        activeLink.removeChild(underline) 
+                    }
+                } 
+
+                this.classList.add("active")
+                localStorage.setItem("activeLink",this.id)
+
+                const underline = document.createElement("div")
+                underline.className = underLineClass
+                this.appendChild(underline)  
+
+            }
+        })
+    })
+})
 
 // onmouseenter="searchMovieTrailer('${item.title || item.name}','yt${item.id}')" onmouseleave="stopMovie('yt${item.id}')"
