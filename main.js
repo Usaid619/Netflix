@@ -45,8 +45,8 @@ function buildBannerSection(movie){
 
    const bannerHtml = `
    <h2 class="banner-title">${movie.title && movie.title.length > 20 ? movie.title.slice(0,20).trim() + "..." : movie.title || movie.name}</h2>
-   <p class="movie-rating">Released on: ${movie.release_date || movie.first_air_date
-}</p>
+   <span class="movie-rating">Released on: ${movie.release_date || movie.first_air_date
+}</span>
    <p class="movie-info">${movie.overview && movie.overview.length > 200 ? movie.overview.slice(0,200).trim() + "..." : movie.overview}</p>
    <div class="action-button-container">
     <button class="action-btn">
@@ -100,8 +100,6 @@ return fetch(fetchUrl)
 async function buildMoviesSection(list, categoryName){
 
     const moviesContainer = document.querySelector("#movies-container")
-
-    
 
     const moviesListHTML = (await Promise.all(list.map( async item =>{ 
         const ratingsHTML = await buildRatings(item.title || item.name, item.id)
