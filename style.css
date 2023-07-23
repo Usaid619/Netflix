@@ -155,7 +155,7 @@ header.scrolled{
     flex-direction: column;
     /* justify-content: center; */
     gap: 10px;
-    min-height: 98vh;
+    min-height: 98dvh;
     /* border: 1px solid rgb(158, 5, 5); */
     /* width: 60%; */
     margin: 0 auto;
@@ -536,6 +536,7 @@ border-top: 3px solid #222222;
         width: 80%;
         border-radius: 0;
         height: 100vh;
+        height: 100dvh;
         position: absolute;
         top: 0;
         left: 0;
@@ -654,6 +655,10 @@ border-top: 3px solid #222222;
     .about-us > h4{
         text-align: center;
         font-size: 24px;
+    }
+
+    .about-us > p{
+        text-align: center;
     }
 
     .social-links{
