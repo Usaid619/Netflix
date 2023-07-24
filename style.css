@@ -155,7 +155,7 @@ header.scrolled{
     flex-direction: column;
     /* justify-content: center; */
     gap: 10px;
-    min-height: 98dvh;
+    min-height: 98vh;
     /* border: 1px solid rgb(158, 5, 5); */
     /* width: 60%; */
     margin: 0 auto;
@@ -544,7 +544,7 @@ border-top: 3px solid #222222;
         width: 80%;
         border-radius: 0;
         height: 100vh;
-        /* height: 100dvh; */
+        height: 100dvh;
         position: fixed;
         top: 0;
         left: 0;
@@ -568,7 +568,7 @@ border-top: 3px solid #222222;
     .main-nav > .nav-item.active > a{
         letter-spacing: 2px;
         color: white;
-        font-size: clamp(18px,4.4vw,32px);
+        font-size: clamp(24px,4.4vw,32px);
     }
     
     .underline{
@@ -582,7 +582,7 @@ border-top: 3px solid #222222;
     }
     
     .main-nav > li > a{
-        font-size: clamp(18px,4vw,30px);
+        font-size: clamp(22px,4vw,30px);
         font-family: 'Caprasimo', cursive;
         text-transform: uppercase;
         font-weight: 100;
@@ -610,7 +610,7 @@ border-top: 3px solid #222222;
     
     .main-nav > .social-icons > a > i{
         flex: 1 1 auto;
-        font-size: clamp(10px,3.1vw,30px);
+        font-size: clamp(20px,3.1vw,30px);
         transition: all .1s ease;
     }
     
