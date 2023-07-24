@@ -170,7 +170,7 @@ header.scrolled{
     align-self: flex-start;
     color: white;
     text-shadow: 1px 1px 6px black;
-font-size: 80px;
+font-size: clamp(40px,7vw,100px);
 line-height: 1.1;
 margin-bottom: 16px;
 max-width: 40%;
@@ -187,7 +187,7 @@ user-select: none;
     user-select: none;
     align-self: flex-start;
     margin-bottom: 1px;
-font-size: 22px;
+font-size: clamp(14px,1.62vw,26px);
 font-weight: 700;
 line-height: 1.5;
 text-shadow: 0px 0px #141414;
@@ -198,7 +198,7 @@ border-radius: 10px;
 }
 
 .movie-info{
-    font-size: 16.4px;
+    font-size: clamp(12px,1.3vw,20px);
     color: white;
     line-height: 1.33;
     max-width: 40%;
@@ -221,13 +221,13 @@ border-radius: 10px;
 }
 
 .action-btn{
-padding: 8px 23px;
-border-radius:4px;
+padding: .5em 1.5em;
+border-radius: 4px;
 border: none;
 color: black;
 background-color: rgba(255, 255, 255, 0.911);
 cursor: pointer;
-font-size: 16px;
+font-size: clamp(12px,1.3vw,30px);
 font-weight: 700;
 }
 
@@ -481,10 +481,18 @@ border-top: 3px solid #222222;
     /* height: 50px; */
 }
 
+.social-icons > a{
+    text-decoration: none;
+}
+
 .social-icons > a > i{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     font-size: 34px;
     color: white;
-    padding: 10px;
+    padding: 0.5em;
     border-radius: 50%;
     transition: all .2s ease;
 }
@@ -495,7 +503,7 @@ border-top: 3px solid #222222;
 }
 
 
-@media all and (max-width:952px){
+@media all and (max-width:968px){
     .hamburger-menu{
         display: flex;
         justify-content: center;
@@ -536,8 +544,8 @@ border-top: 3px solid #222222;
         width: 80%;
         border-radius: 0;
         height: 100vh;
-        height: 100dvh;
-        position: absolute;
+        /* height: 100dvh; */
+        position: fixed;
         top: 0;
         left: 0;
         transform: translateX(-110%);
@@ -560,7 +568,7 @@ border-top: 3px solid #222222;
     .main-nav > .nav-item.active > a{
         letter-spacing: 2px;
         color: white;
-        font-size: 34px;
+        font-size: clamp(18px,4.4vw,32px);
     }
     
     .underline{
@@ -568,13 +576,13 @@ border-top: 3px solid #222222;
         top: calc(50% - 2px);
         left: 0;
         background-color: #501b1d;
-        height: .35em;
+        height: .3em;
         width: 100%;
         pointer-events: none;
     }
     
     .main-nav > li > a{
-        font-size: 30px;
+        font-size: clamp(18px,4vw,30px);
         font-family: 'Caprasimo', cursive;
         text-transform: uppercase;
         font-weight: 100;
@@ -595,24 +603,20 @@ border-top: 3px solid #222222;
         justify-content: center;
         align-items: center;
         text-decoration: none;
-        height: 56px;
-        width: 56px;
         border-radius: 50%;
+        /* background-color: green; */
         transition: all .3s ease;
-    }
-    
-    .main-nav > .social-icons > a:hover{
-        background-color: #290f12;
     }
     
     .main-nav > .social-icons > a > i{
         flex: 1 1 auto;
-        font-size: 30px;
-          transition: all .1s ease;
+        font-size: clamp(10px,3.1vw,30px);
+        transition: all .1s ease;
     }
     
-    .main-nav > .social-icons > a:hover > i{
-        font-size: 35px;
+    .main-nav > .social-icons > a > i:hover{
+        font-size: clamp(12px,3.3vw,32px);
+        background-color: #290f12;
     }
     
     .banner-title{
@@ -635,9 +639,6 @@ border-top: 3px solid #222222;
 
 
 @media all and (max-width: 720px) {
-    .banner-title{
-        font-size: 60px;
-    }
     .about-us-div{
         /* background-color: red; */
         flex-direction: column;
@@ -677,9 +678,6 @@ border-top: 3px solid #222222;
 }
 
 @media all and (max-width: 510px){
-    .banner-title{
-        font-size: 50px;
-    }
     .right-container{
         display: none;
     }
