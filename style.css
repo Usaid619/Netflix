@@ -18,6 +18,11 @@ body{
     background-color: #141414;
 }
 
+html{
+    scroll-snap-type: y proximity;
+    scroll-padding-top: 75px;
+}
+
 header{
     background-color: transparent;
     position: fixed;
@@ -191,7 +196,7 @@ font-size: clamp(14px,1.62vw,26px);
 font-weight: 700;
 line-height: 1.5;
 text-shadow: 0px 0px #141414;
-background-color: #df0404fa;
+background-color: #14141448;
 /* width:280px; */
 padding: 10px;
 border-radius: 10px;
@@ -276,6 +281,7 @@ font-weight: 700;
 
 .movies-section{
     margin: 0 22px;
+    scroll-snap-align: start;
     /* background-color: khaki; */
 }
 
@@ -317,11 +323,23 @@ font-weight: 700;
     /* background-color: saddlebrown; */
     overflow-x: auto;
     overflow-y: visible;
+    scroll-snap-type: x mandatory;
     /* flex-wrap: nowrap; */
 }
 
 .movie-item-cont{
-    /* position: fixed; */
+    height: 145px;
+    width: 245px;
+    flex-shrink: 0;
+    scroll-snap-align: end;
+    /* border: 1px solid red; */
+    /* background-color: yellow; */
+}
+
+.movie-item{
+    /* border: 1px solid red; */
+    position: relative;
+    transition: all ease .5s; 
 }
 
 .movie-item-cont:hover .movie-item{
@@ -329,12 +347,6 @@ position: absolute;
 scale: 1.2; 
 z-index: 3;
 transform: translateY(-60px)
-}
-
-.movie-item{
-    /* border: 1px solid red; */
-    position: relative;
-    transition: all ease .5s; 
 }
 
 .movie-item-img{
@@ -395,11 +407,11 @@ font-weight: 100;
     /* background-color: aqua; */
     outline: none;
     border: none;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
 }
 
 .movie-item:hover .rating-info {
-    width: 200%;
+    width: 150%;
     display: block;
 }
 
@@ -489,8 +501,7 @@ border-top: 3px solid #222222;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    font-size: 34px;
+    font-size: 35px;
     color: white;
     padding: 0.5em;
     border-radius: 50%;
@@ -499,7 +510,22 @@ border-top: 3px solid #222222;
 
 .social-icons > a > i:hover{
     scale: 1.1;
-    background-color: #501b1d;
+}
+
+
+/* TvShows Css*/
+.mock-page{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60px;
+width: 100%;
+height: 100vh;
+background-color: #181818;
+}
+
+.mock-page > h2{
+font-size: clamp(26px,5vw,64px);
 }
 
 
@@ -525,7 +551,7 @@ border-top: 3px solid #222222;
     .hamburger-menu.opened{
         transform: rotate(-45deg);
         padding: 10px;
-        border-radius: 50%;
+        
         background-color: #290f12;
     } 
     
@@ -591,7 +617,7 @@ border-top: 3px solid #222222;
     }
     
     .main-nav > .social-icons{   
-         margin-top: 20px;
+        margin-top: 20px;
         display: flex;
         gap: 20px;
         width: 100%;
@@ -634,11 +660,26 @@ border-top: 3px solid #222222;
     .movies-section{
         margin-top: 40px;
     }
-    
+
+    .movie-item-cont,.movie-item-img{
+        height: 125px;
+        width: 204px;
     }
+    
+    
+    .social-icons > a > i{
+        font-size: 28px;
+    }
+    
+}
 
 
 @media all and (max-width: 720px) {
+    .movie-item-cont,.movie-item-img{
+        height: 100px;
+        width: 163px;
+        }
+    
     .about-us-div{
         /* background-color: red; */
         flex-direction: column;
@@ -646,18 +687,18 @@ border-top: 3px solid #222222;
         align-items: stretch;
         /* align-items: center; */
     }
-
+    
     .about-us{
         /* background-color: green; */
         max-width: 100%;
         gap: 30px;
     }
-
+    
     .about-us > h4{
         text-align: center;
         font-size: 24px;
     }
-
+    
     .about-us > p{
         text-align: center;
     }
@@ -666,19 +707,66 @@ border-top: 3px solid #222222;
         /* background-color: saddlebrown; */
         justify-content: space-around;
     }
-
+    
     .social-links > ul{
         gap: 7px;
     }
-
+    
     .contact-us-div{
         flex-direction: column;
         gap: 30px;
     }
+
+    .social-icons > a > i{
+        font-size: 25px;
+    }
 }
 
 @media all and (max-width: 510px){
+    .left-container{
+        position: relative;
+    }
+
+    .netflix-logo{
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
     .right-container{
         display: none;
     }
+    
+    .movie-item-cont,.movie-item-img{
+        height: 75px;
+        width: 122.5px;
+    }
+    
+    .ratings-div{
+        display: none;
+        padding:0;
+    }
+
+    .social-icons > a > i{
+        font-size: 22px;
+    }
+}
+
+.scroll-overlay{
+    opacity: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0;
+    z-index: 110;
+    background-color: rgba(0, 0, 0, 0.8);
+    transition: all 1.3s ease;
+}
+
+.scroll-opacity{
+    opacity: 1;
+    height: 100vh;
+    width: 100vw;
 }

@@ -19,8 +19,6 @@ function init(){
     fetchAndBuildAllSections()
 }
 
-
-
 function fetchTrendingMovies(){
     fetchAndBuildMovieSection(apiPaths.fetchTrending, "Trending Now")
     .then( list => {
@@ -170,6 +168,7 @@ function buildRatings(movieName, itemId){
 
 
 function searchMovieTrailer(movieName, iFrameId){
+    console.log(movieName, iFrameId)
     if(!movieName || movieName == "undefined") return
 
     fetch(apiPaths.searchOnYoutube(movieName))
@@ -196,11 +195,23 @@ window.addEventListener("scroll",()=>{
 
 const hamMenu = document.querySelector(".ham-menu")
 const hamburgerMenu = document.querySelector(".hamburger-menu")
+const scrollOverlay = document.querySelector(".scroll-overlay")
+const mainBody = document.querySelector(".body")
+
 
 hamMenu.addEventListener("click",()=>{
-    gsap.from(".underline", {duration : 1, opacity: 0, delay: .7, x: -100})
-
+    gsap.from(".underline", {duration : 1, delay: 1.1, x: "-100%",})
+    
+    console.log(mainBody)
     hamburgerMenu.classList.toggle("opened")
+
+    if(hamburgerMenu.classList.contains("opened")){
+    scrollOverlay.classList.add("scroll-opacity")
+    mainBody.style.overflow = "hidden"
+    } else{
+        scrollOverlay.classList.remove("scroll-opacity")
+        mainBody.style.overflow = "auto"
+    }
 })
 
 document.addEventListener("DOMContentLoaded", function(){
@@ -219,7 +230,7 @@ document.addEventListener("DOMContentLoaded", function(){
     
     navLinks.forEach((nav) =>{
         nav.addEventListener("click", function (){
-            gsap.from(".underline", {duration: 1, delay: .7, opacity: 0, x: -100})
+            gsap.from(".underline", {duration: 1, delay: .7, x: "-100%"})
 
             if(!this.classList.contains("active")){
 
