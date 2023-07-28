@@ -71,7 +71,7 @@ function fetchAndBuildAllSections(){
         const categories = res.genres
 
         if(Array.isArray(categories) && categories.length){
-            categories.slice(0,5).forEach(category =>{
+            categories.forEach(category =>{
                 
                 fetchAndBuildMovieSection(
                     apiPaths.fetchAllMoviesList(category.id), category.name )
@@ -114,7 +114,7 @@ async function buildMoviesSection(list, categoryName){
     </div>
   </div>
           `
-    }))).slice(0,9).join("")
+    }))).slice(0,11).join("")
 
 const moviesSectionHTML = `
 <h2 class="movie-section-heading"> <span>Explore All</span>${categoryName}</h2>

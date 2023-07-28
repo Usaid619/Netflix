@@ -279,6 +279,10 @@ font-weight: 700;
     /* margin-top: -60px; */
 }
 
+.movies-section:first-child{
+scroll-snap-align: none;
+}
+
 .movies-section{
     margin: 0 22px;
     scroll-snap-align: start;
