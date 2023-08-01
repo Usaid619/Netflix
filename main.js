@@ -256,4 +256,11 @@ document.addEventListener("DOMContentLoaded", function(){
     })
 })
 
-// onmouseenter="searchMovieTrailer('${item.title || item.name}','yt${item.id}')" onmouseleave="stopMovie('yt${item.id}')"
+document.addEventListener("click",function(e){
+    if(e.target.classList.contains("scroll-overlay")){
+        hamburgerMenu.classList.remove("opened")
+        scrollOverlay.classList.remove("scroll-opacity")
+        mainBody.style.overflow = "auto"
+    }
+   
+})
