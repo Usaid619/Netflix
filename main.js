@@ -1,3 +1,6 @@
+// API RELATED
+// Declaring Variables
+
 const apiKey = "366984552808749ba281d7846991b9cb"
 const youtubeApiKey = "AIzaSyBJO2FGGy5knwSKJ374pyfoU4B9gd9_oh8"
 const apiEndPoint = "https://api.themoviedb.org/3"
@@ -13,6 +16,8 @@ const apiPaths = {
 }
 const bannerSection = document.querySelector("#banner-section")
 
+
+// Making Funntions
 function init(){
     fetchPopular()
     fetchTrendingMovies()
@@ -166,7 +171,6 @@ function buildRatings(movieName, itemId){
     document.getElementById(iFrameId).src = ""
 } 
 
-
 function searchMovieTrailer(movieName, iFrameId){
     console.log(movieName, iFrameId)
     if(!movieName || movieName == "undefined") return
@@ -180,6 +184,8 @@ function searchMovieTrailer(movieName, iFrameId){
     .catch(err => console.error(err))
 }
 
+// Adding Event Listeners
+
 window.addEventListener("load",()=>{
     init()
 
@@ -192,75 +198,110 @@ window.addEventListener("scroll",()=>{
 // header transition
 }) 
 
+////////////////////////////////////////
+////////////////////////////////////////
 
+// CSS RELATED
+// Declaring Variables
 const hamMenu = document.querySelector(".ham-menu")
 const hamburgerMenu = document.querySelector(".hamburger-menu")
 const scrollOverlay = document.querySelector(".scroll-overlay")
 const mainBody = document.querySelector(".body")
 
-
-hamMenu.addEventListener("click",()=>{
-    gsap.from(".underline", {duration : 1, delay: 1.1, x: "-100%",})
-    
-    console.log(mainBody)
+// Making Functions
+function toggleHamMenu(){
+    triggerLineThrough()
     hamburgerMenu.classList.toggle("opened")
+    addScrollOverlay()
+}
 
-    if(hamburgerMenu.classList.contains("opened")){
-    scrollOverlay.classList.add("scroll-opacity")
-    mainBody.style.overflow = "hidden"
-    } else{
-        scrollOverlay.classList.remove("scroll-opacity")
-        mainBody.style.overflow = "auto"
-    }
-})
+function triggerLineThrough(){
+    gsap.from(".underline", {duration : 1, delay: 1.1, x: "-100%",})
+}
 
-document.addEventListener("DOMContentLoaded", function(){
+function addScrollOverlay(){
+    hamburgerMenu.classList.contains("opened")
+    ? (scrollOverlay.classList.add("scroll-opacity"), mainBody.style.overflow = "hidden")
+    : (scrollOverlay.classList.remove("scroll-opacity"),mainBody.style.overflow = "auto")
+}
+
+function closeHamburgerMenu(e){
+    e.target.classList.contains("scroll-overlay")
+    ?(hamburgerMenu.classList.remove("opened"), scrollOverlay.classList.remove("scroll-opacity"), mainBody.style.overflow = "auto")
+    : null
+}
+
+function setSelectedNavLinks(){
     const navLinks = Array.from(document.querySelectorAll(".nav-item"))
     const underLineClass = "underline"
 
     const activeLink = localStorage.getItem("activeLink")
-    if(activeLink){
-        const activeLinkElement = document.getElementById(activeLink)
-        activeLinkElement.classList.add("active")
+    
+    activeLink
+    ? (document.getElementById(activeLink).classList.add("active"),
+     (underline = document.createElement("div")).className = underLineClass,
+     document.getElementById(activeLink).appendChild(underline))
+    : null;
 
-        const underline = document.createElement("div")
-        underline.className = underLineClass
-        activeLinkElement.appendChild(underline)
+    function lineThroughOnClick(){
+        gsap.from(".underline", {duration: 1, delay: .7, x: "-100%"})
+
+        if(!this.classList.contains("active")){
+            const activeLink = document.querySelector(".nav-item.active")
+
+            if(activeLink){
+                activeLink.classList.remove("active")
+                const underline = activeLink.querySelector(`.${underLineClass}`)
+                if(underline){
+                    activeLink.removeChild(underline) 
+                }
+            } 
+
+            this.classList.add("active")
+            localStorage.setItem("activeLink",this.id)
+
+            const underline = document.createElement("div")
+            underline.className = underLineClass
+            this.appendChild(underline)  
+        }
+    }
+
+    navLinks.forEach((nav) =>{
+        nav.addEventListener("click", lineThroughOnClick)
+    })
+}
+
+// Adding Event Listeners
+hamMenu.addEventListener("click", toggleHamMenu)
+
+document.addEventListener("DOMContentLoaded", setSelectedNavLinks)
+document.addEventListener("click",closeHamburgerMenu)
+
+////////////////////////////////////////
+////////////////////////////////////////
+
+// GSAP ANIMATIONS
+
+const isLargeDevice = window.matchMedia("(min-width: 968px)").matches
+
+const tl = gsap.timeline()
+
+document.addEventListener("DOMContentLoaded", ()=>{
+    if(isLargeDevice){
+        tl.from(".left-container > a, .left-container > .main-nav,.right-container",{
+        y: "-100%",
+        duration: 1,
+        opacity:0,
+        stagger: .3
+    })
     }
     
-    navLinks.forEach((nav) =>{
-        nav.addEventListener("click", function (){
-            gsap.from(".underline", {duration: 1, delay: .7, x: "-100%"})
-
-            if(!this.classList.contains("active")){
-
-                const activeLink = document.querySelector(".nav-item.active")
-
-                if(activeLink){
-                    activeLink.classList.remove("active")
-                    const underline = activeLink.querySelector(`.${underLineClass}`)
-                    if(underline){
-                        activeLink.removeChild(underline) 
-                    }
-                } 
-
-                this.classList.add("active")
-                localStorage.setItem("activeLink",this.id)
-
-                const underline = document.createElement("div")
-                underline.className = underLineClass
-                this.appendChild(underline)  
-
-            }
-        })
+    else{
+    tl.from(".left-container > a,.right-container",{
+        y: "-100%",
+        duration: 1,
+        opacity:0,
+        stagger: .3
     })
-})
-
-document.addEventListener("click",function(e){
-    if(e.target.classList.contains("scroll-overlay")){
-        hamburgerMenu.classList.remove("opened")
-        scrollOverlay.classList.remove("scroll-opacity")
-        mainBody.style.overflow = "auto"
     }
-   
 })
