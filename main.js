@@ -283,7 +283,7 @@ document.addEventListener("click",closeHamburgerMenu)
 // GSAP ANIMATIONS
 
 const isLargeDevice = window.matchMedia("(min-width: 968px)").matches
-
+const isNormalDevice = window.matchMedia("(min-width: 510px)").matches
 const tl = gsap.timeline()
 
 document.addEventListener("DOMContentLoaded", ()=>{
@@ -292,16 +292,41 @@ document.addEventListener("DOMContentLoaded", ()=>{
         y: "-100%",
         duration: 1,
         opacity:0,
-        stagger: .3
+        stagger: .3,
+        ease:"back.out(1.7)"
     })
     }
     
-    else{
+    if(isNormalDevice){
     tl.from(".left-container > a,.right-container",{
         y: "-100%",
         duration: 1,
         opacity:0,
-        stagger: .3
+        stagger: .3,
+        ease:"back.out(1.7)"
     })
+
+    tl.from(".hamburger-menu > i",{
+        scale: 0,
+        rotate: 360,
+        duration: 1.3,
+        ease:"bounce"
+    })
+    } 
+
+    else{
+        tl.from(".left-container > a",{
+            y: "-100%",
+            duration: 1.3,
+            opacity:0,
+            ease:"back.out(1.7)"
+        })
+
+        tl.from(".hamburger-menu > i",{
+            scale: 0,
+            rotate: 360,
+            duration: 1.3
+        })
+
     }
 })
