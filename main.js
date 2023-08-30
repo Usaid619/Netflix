@@ -6,6 +6,7 @@ const youtubeApiKey = "AIzaSyBJO2FGGy5knwSKJ374pyfoU4B9gd9_oh8"
 const apiEndPoint = "https://api.themoviedb.org/3"
 const imgPath = "https://image.tmdb.org/t/p/original"
 const youtubeEndPoint = "https://www.googleapis.com/youtube/v3"
+
 const apiPaths = {
     fetchAllCategories : `${apiEndPoint}/genre/movie/list?api_key=${apiKey}`,
     fetchAllMoviesList : (id) => `${apiEndPoint}/discover/movie?api_key=${apiKey}&with_genres=${id}`,
@@ -38,7 +39,6 @@ function fetchPopular(){
 }
 
 function buildBannerSection(movie){
-
    bannerSection.style.background = `url(${imgPath}${movie.backdrop_path
    })`
 
@@ -73,7 +73,7 @@ function fetchAndBuildAllSections(){
     fetch(apiPaths.fetchAllCategories)
     .then(res => res.json())
     .then(res =>{
-        const categories = res.genres
+        const categories = res.genres.slice(0,4)
 
         if(Array.isArray(categories) && categories.length){
             categories.forEach(category =>{
@@ -119,7 +119,7 @@ async function buildMoviesSection(list, categoryName){
     </div>
   </div>
           `
-    }))).slice(0,11).join("")
+    }))).slice(0,6).join("")
 
 const moviesSectionHTML = `
 <h2 class="movie-section-heading"> <span>Explore All</span>${categoryName}</h2>
@@ -279,54 +279,3 @@ document.addEventListener("click",closeHamburgerMenu)
 
 ////////////////////////////////////////
 ////////////////////////////////////////
-
-// GSAP ANIMATIONS
-
-const isLargeDevice = window.matchMedia("(min-width: 968px)").matches
-const isNormalDevice = window.matchMedia("(min-width: 510px)").matches
-const tl = gsap.timeline()
-
-document.addEventListener("DOMContentLoaded", ()=>{
-    if(isLargeDevice){
-        tl.from(".left-container > a, .left-container > .main-nav,.right-container",{
-        y: "-100%",
-        duration: 1,
-        opacity:0,
-        stagger: .3,
-        ease:"back.out(1.7)"
-    })
-    }
-    
-    if(isNormalDevice){
-    tl.from(".left-container > a,.right-container",{
-        y: "-100%",
-        duration: 1,
-        opacity:0,
-        stagger: .3,
-        ease:"back.out(1.7)"
-    })
-
-    tl.from(".hamburger-menu > i",{
-        scale: 0,
-        rotate: 360,
-        duration: 1.3,
-        ease:"bounce"
-    })
-    } 
-
-    else{
-        tl.from(".left-container > a",{
-            y: "-100%",
-            duration: 1.3,
-            opacity:0,
-            ease:"back.out(1.7)"
-        })
-
-        tl.from(".hamburger-menu > i",{
-            scale: 0,
-            rotate: 360,
-            duration: 1.3
-        })
-
-    }
-})
