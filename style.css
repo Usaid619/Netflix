@@ -19,7 +19,6 @@ body{
 }
 
 html{
-    scroll-snap-type: y proximity;
     scroll-padding-top: 75px;
 }
 
@@ -279,13 +278,9 @@ font-weight: 700;
     /* margin-top: -60px; */
 }
 
-.movies-section:first-child{
-scroll-snap-align: none;
-}
 
 .movies-section{
     margin: 0 22px;
-    scroll-snap-align: start;
     /* background-color: khaki; */
 }
 
@@ -455,6 +450,10 @@ footer{
     flex-direction: column;
     gap: 30px;
     max-width: 30%;
+}
+
+.about-us > p{
+    line-height: 1.4em;
 }
 
 .social-links{
