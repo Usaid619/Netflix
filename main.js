@@ -172,7 +172,6 @@ function buildRatings(movieName, itemId){
 } 
 
 function searchMovieTrailer(movieName, iFrameId){
-    console.log(movieName, iFrameId)
     if(!movieName || movieName == "undefined") return
 
     fetch(apiPaths.searchOnYoutube(movieName))
